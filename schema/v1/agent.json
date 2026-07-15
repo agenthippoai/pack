@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://packs.agenthippo.ai/schema/v1/agent.json",
+  "title": "AgentHippo Agent Pack Manifest",
+  "description": "JSON Schema for agent.yaml — the Agent Pack manifest (Agent Pack Specification v1). Spec text and schema: CC BY 4.0. Canonical: https://packs.agenthippo.ai/spec/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "const": "agenthippo.ai/v1",
+      "description": "API group and version of this Agent Pack Specification revision."
+    },
+    "kind": {
+      "type": "string",
+      "const": "Agent",
+      "description": "Resource kind. Always Agent for an Agent Pack manifest."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$",
+          "description": "Agent Pack id (stable kebab-case slug)."
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+([.-][0-9A-Za-z.-]+)?$",
+          "description": "Semantic version of this Agent Pack (independent of apiVersion)."
+        },
+        "description": {
+          "type": "string",
+          "description": "One-line summary for store search and review. Recommended."
+        },
+        "author": {
+          "type": "string",
+          "description": "Publisher credit for the Agent Pack."
+        },
+        "license": {
+          "type": "string",
+          "description": "Optional SPDX or free-form license for the Agent Pack contents."
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Optional keywords for store discovery."
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["engine"],
+      "properties": {
+        "engine": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Which Agent Engine executes the agent loop. Built-ins and custom engine ids are allowed; common values include cursor, claude, codex, gemini, grok, rovo, openclaw, or a custom engine.mjs id.",
+          "examples": ["cursor", "claude", "codex", "gemini", "grok", "rovo", "openclaw"]
+        },
+        "engineVersion": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional pin of the engine binary (e.g. Claude Code CLI version for engine claude)."
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Model selector passed to the engine (provider/engine id). Use auto to let the engine choose when supported."
+        },
+        "cheapModel": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional cheaper model for background or subagent-style routing when the engine supports it."
+        },
+        "remote": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["url"],
+          "properties": {
+            "url": {
+              "type": "string",
+              "minLength": 1,
+              "description": "When set, the pack runs at this URL instead of running spec.engine locally."
+            }
+          }
+        },
+        "permissions": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "fileAccess": {
+              "type": "string",
+              "enum": ["read-only", "workspace-write", "full"],
+              "description": "Filesystem access scope. Defaults to full if omitted; production Agent Packs should set this explicitly."
+            }
+          }
+        },
+        "mcp": {
+          "type": "array",
+          "description": "MCP server configs the Agent Pack may call (paths relative to the Agent Pack root).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "config"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Logical MCP server name."
+              },
+              "config": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Relative path to an MCP JSON config (e.g. ./mcp/databricks.mcp.json)."
+              }
+            }
+          }
+        },
+        "skills": {
+          "type": "array",
+          "description": "Bundled skills (paths relative to the Agent Pack root).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path"],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Relative path to a skill directory or file."
+              }
+            }
+          }
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional pack data seeding when the workspace target is missing or empty.",
+          "properties": {
+            "sourcePath": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Source directory in the Agent Pack (relative). Default ./data."
+            },
+            "workspacePath": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Workspace-relative target directory for seeded data."
+            }
+          }
+        }
+      }
+    },
+    "computed": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Install/sync-time hashes. Usually omitted from authored agent.yaml; may appear after tooling writes them.",
+      "properties": {
+        "featureSetHash": { "type": "string" },
+        "skillsSignature": { "type": "string" },
+        "promptsSignature": { "type": "string" }
+      }
+    }
+  },
+  "examples": [
+    {
+      "apiVersion": "agenthippo.ai/v1",
+      "kind": "Agent",
+      "metadata": {
+        "name": "warehouse-analyst",
+        "version": "0.1.0",
+        "author": "AgentHippo",
+        "description": "Read-only warehouse analyst — answers questions against the warehouse via per-user (OBO) SQL access."
+      },
+      "spec": {
+        "engine": "claude",
+        "engineVersion": "2.1.209",
+        "model": "claude-fable-5",
+        "permissions": {
+          "fileAccess": "read-only"
+        },
+        "mcp": [
+          {
+            "name": "databricks",
+            "config": "./mcp/databricks.mcp.json"
+          }
+        ],
+        "skills": [
+          {
+            "path": "./skills/sql-query"
+          }
+        ]
+      }
+    }
+  ]
+}
