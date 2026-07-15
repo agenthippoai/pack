@@ -31,6 +31,4 @@ In `agent.yaml`:
 
 ## Contributing
 
-Open issues for clarifications and RFCs. Until external implementers ship against it, this is a **published specification** — not an “open standard” process.
-
-Registry, certification, and runtime products remain separate commercial offerings from AgentHippo.
+Open issues for clarifications and RFCs.
