@@ -1,10 +1,9 @@
 {
   "name": "@agenthippo-ai/pack-validate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Validate Agent Pack agent.yaml manifests against the published JSON Schema",
   "keywords": [
     "Agent Pack",
-    "AgentHippo",
     "agent-pack",
     "agenthippo",
     "agent",
@@ -25,7 +24,7 @@
     "node": ">=20"
   },
   "bin": {
-    "pack-validate": "./bin/pack-validate.mjs"
+    "pack-validate": "bin/pack-validate.mjs"
   },
   "main": "./src/validate.mjs",
   "exports": {
