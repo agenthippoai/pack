@@ -54,28 +54,26 @@ Machine-readable details (patterns, consts, nested shapes) live in the JSON Sche
 
 ## Full example
 
-Read-only warehouse analyst with per-user (OBO) SQL access.
+Read-only Databricks warehouse analyst with per-user (OBO) SQL access.
 
 ```yaml
 # yaml-language-server: $schema=https://packs.agenthippo.ai/schema/v1/agent.json
 apiVersion: agenthippo.ai/v1
 kind: Agent
 metadata:
-  name: warehouse-analyst
+  name: databricks-analyst
   version: 0.1.0
-  author: AgentHippo
-  description: Read-only warehouse analyst — answers questions against the warehouse via per-user (OBO) SQL access.
+  description: Read-only warehouse analyst — answers questions against Databricks via per-user (OBO) SQL access.
 spec:
-  engine: claude
-  engineVersion: 2.1.209
-  model: claude-fable-5
+  engine: cursor
+  model: auto
   permissions:
     fileAccess: read-only
   mcp:
     - name: databricks
       config: ./mcp/databricks.mcp.json
   skills:
-    - path: ./skills/sql-query
+    - path: ./skills/spotlight-visualize
 ```
 
 ## Engine
