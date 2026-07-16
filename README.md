@@ -48,7 +48,7 @@ spec:
     - path: ./skills/sql-query
 ```
 
-Only `agent.yaml` is required. Companion files (`AGENTS.md`, `skills/`, `mcp/`) complete a pack; see [Anatomy](https://packs.agenthippo.ai/spec/v1/#anatomy).
+Only `agent.yaml` is required by the schema. The pack prompt is always **`AGENTS.md` at the pack root** — a fixed path, not a manifest field (same idea as `Dockerfile`). Companion dirs `skills/` and `mcp/` are declared via `spec.skills` / `spec.mcp` because those can be many. Subagents should be other Agent Packs (own engine, model, tools), not nested mini-configs. Details: [SPEC.md](./SPEC.md#prompt-agentsmd) · [Anatomy](https://packs.agenthippo.ai/spec/v1/#anatomy).
 
 ## Layout
 

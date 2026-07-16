@@ -19,7 +19,7 @@
     },
     "metadata": {
       "type": "object",
-      "additionalProperties": false,
+      "additionalProperties": true,
       "required": ["name", "version"],
       "properties": {
         "name": {
@@ -93,7 +93,7 @@
         },
         "permissions": {
           "type": "object",
-          "additionalProperties": false,
+          "additionalProperties": true,
           "properties": {
             "fileAccess": {
               "type": "string",
@@ -101,6 +101,11 @@
               "description": "Filesystem access scope. Defaults to full if omitted; production Agent Packs should set this explicitly."
             }
           }
+        },
+        "visibility": {
+          "type": "string",
+          "enum": ["internal", "team", "public"],
+          "description": "Registry access scope for the Agent Pack."
         },
         "mcp": {
           "type": "array",

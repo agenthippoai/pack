@@ -22,9 +22,33 @@ Only `agent.yaml` is required by this spec.
 | Path | Role |
 |------|------|
 | `agent.yaml` | Manifest — identity, engine, model, permissions, MCP, skills. See [Manifest reference](#manifest-reference). |
-| `AGENTS.md` | Prompt — purpose, behavior, refusals. |
+| `AGENTS.md` | Prompt — purpose, behavior, refusals. Fixed path; not a manifest field. See [Prompt](#prompt-agentsmd). |
 | `skills/<name>/SKILL.md` | Bundled skills; same trust boundary as the rest of the pack. |
 | `mcp/*.mcp.json` | Tool configs. Per-user credentials are referenced, never inlined in the manifest. |
+
+## Prompt (`AGENTS.md`)
+
+The pack prompt is always **`AGENTS.md` at the pack root**. There is no `spec.prompt` (or similar) field in `agent.yaml`.
+
+That is intentional. Skills and MCP need path lists because there can be many, with varying names. The prompt is singular and canonical — the same pattern as `Dockerfile` or `README.md`: the filename *is* the contract. Declaring `prompt: ./AGENTS.md` on every pack would be boilerplate, not information.
+
+Tooling and validators that care about the prompt look for that fixed path (and may record a hash such as `computed.promptsSignature`). Alternate filenames are out of scope for v1.
+
+### Claude Code and project rules
+
+Claude Code (and similar coding agents) often load instructions from well-known files — `AGENTS.md`, `CLAUDE.md`, and rule trees under the project. An Agent Pack folder can **completely satisfy** that model for a given agent:
+
+- Put the operating instructions in pack-root `AGENTS.md` (and keep them versioned with the pack).
+- Bundle skills and MCP under the pack so tools travel with the same identity.
+- Pin engine and model in `agent.yaml` (`spec.engine`, optional `spec.engineVersion` / `spec.model`).
+
+When the pack is the working tree (or is mounted as the agent’s project root), Claude Code–style loaders that already honor `AGENTS.md` pick up the same prompt the Pack format treats as canonical. Rules and conventions that would otherwise live as ad-hoc files across a repo can be **closed inside the pack folder and schema** — one reviewable unit — while `AGENTS.md` remains the entry point those engines already know how to read.
+
+### Subagents
+
+Weak nested “subagent” blobs (a name + a paragraph inside a parent config) are not the recommended shape. **A subagent should be another Agent Pack**: its own `agent.yaml`, its own `AGENTS.md`, its own engine, model, permissions, and tools.
+
+That keeps every worker reviewable, swappable, and attributable the same way as the parent. Delegation *when* to call whom stays in prose (`AGENTS.md`); *what* the subagent is stays entirely in the child pack’s manifest. A future dependency list field (`spec.subagents`) may enumerate those packs by name/path — see [Changelog](#changelog) — but it does not invent a second, weaker descriptor format.
 
 ## Manifest reference
 
@@ -46,6 +70,7 @@ Fields of `agent.yaml`, in document order. A conforming pack validates against t
 | `spec.cheapModel` | string | Optional | Cheaper model for background / subagent routing when supported. |
 | `spec.remote.url` | string | Optional | When set, the pack runs at this URL instead of local `spec.engine`. See [Remote](#remote). |
 | `spec.permissions.fileAccess` | enum | Optional | `read-only` \| `workspace-write` \| `full`. Defaults to `full` if omitted — set it explicitly for production packs. |
+| `spec.visibility` | enum | Optional | `internal` \| `team` \| `public`. Registry access scope for the pack. |
 | `spec.mcp` | array | Optional | MCP server entries: `name` + relative `config` path. |
 | `spec.skills` | array | Optional | Bundled skills: each entry has a relative `path`. |
 | `spec.data` | object | Optional | Seed pack data into an empty workspace — `sourcePath` (default `./data`), `workspacePath`. |
