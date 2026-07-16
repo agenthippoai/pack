@@ -4,7 +4,7 @@
 **Canonical URL:** https://packs.agenthippo.ai/spec/v1  
 **Schema:** https://packs.agenthippo.ai/schema/v1/agent.json  
 **Last updated:** 2026-07-15  
-**Overview:** [Why Agent Pack](https://agenthippo.ai/agent-pack)
+**Overview:** [Why Agent Pack](https://agenthippo.ai/why-agent-pack)
 
 > **An Agent Pack is a versioned, deployable unit of agent** — its prompt, its tools, its engine, and its permissions.  
 > It’s what your IDE writes, your CI validates, and your infrastructure runs.

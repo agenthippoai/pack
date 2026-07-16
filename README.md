@@ -9,7 +9,7 @@ Published specification, JSON Schema, and (soon) validator for **Agent Packs**.
 |---|---|
 | **Canonical HTML** | https://packs.agenthippo.ai/spec/v1 |
 | **Schema `$id`** | https://packs.agenthippo.ai/schema/v1/agent.json |
-| **Pitch** | https://agenthippo.ai/agent-pack |
+| **Pitch** | https://agenthippo.ai/why-agent-pack |
 | **License** | [CC BY 4.0](./LICENSE) (spec text + schema) |
 
 This repository is the machine-readable / citable source for the format. The website hosts the same schema and a rendered spec page. Validator + GitHub Action land here next (`pack-validate`).
