@@ -1,0 +1,22 @@
+name: 'Agent Pack validate'
+description: 'Validate agent.yaml against the Agent Pack JSON Schema (packs.agenthippo.ai)'
+author: 'AgentHippo'
+branding:
+  icon: 'check-circle'
+  color: 'green'
+inputs:
+  path:
+    description: >-
+      Path to an agent.yaml, a pack directory, or a parent directory that
+      contains pack folders (one-level */agent.yaml scan). Default: .
+    required: false
+    default: '.'
+runs:
+  using: composite
+  steps:
+    - name: Install pack-validate deps
+      shell: bash
+      run: npm install --prefix "$GITHUB_ACTION_PATH" --omit=dev --no-fund --no-audit
+    - name: Validate Agent Pack manifests
+      shell: bash
+      run: node "$GITHUB_ACTION_PATH/bin/pack-validate.mjs" "${{ inputs.path }}"

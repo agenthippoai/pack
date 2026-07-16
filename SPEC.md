@@ -134,7 +134,7 @@ Point editors that support `yaml-language-server` at the schema for inline valid
 # yaml-language-server: $schema=https://packs.agenthippo.ai/schema/v1/agent.json
 ```
 
-Coming next: `npx @agenthippo/pack-validate` and GitHub Action `agenthippoai/pack-validate`.
+Validate with `npx @agenthippo-ai/pack-validate` or GitHub Action `uses: agenthippoai/pack@v0.1.0`.
 
 ### Badge
 

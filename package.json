@@ -1,0 +1,38 @@
+{
+  "name": "@agenthippo-ai/pack-validate",
+  "version": "0.1.0",
+  "description": "Validate Agent Pack agent.yaml manifests against the published JSON Schema",
+  "author": "AgentHippo <dev@agenthippo.ai>",
+  "license": "CC-BY-4.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agenthippoai/pack.git"
+  },
+  "homepage": "https://packs.agenthippo.ai/spec/v1",
+  "bugs": "https://github.com/agenthippoai/pack/issues",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "pack-validate": "./bin/pack-validate.mjs"
+  },
+  "main": "./src/validate.mjs",
+  "exports": {
+    ".": "./src/validate.mjs",
+    "./schema": "./schema/v1/agent.json"
+  },
+  "files": [
+    "bin",
+    "src",
+    "schema/v1/agent.json",
+    "action.yml"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "js-yaml": "^4.1.1"
+  }
+}

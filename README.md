@@ -11,8 +11,9 @@ Published specification, JSON Schema, and (soon) validator for **Agent Packs**.
 | **Schema `$id`** | https://packs.agenthippo.ai/schema/v1/agent.json |
 | **Pitch** | https://agenthippo.ai/why-agent-pack |
 | **License** | [CC BY 4.0](./LICENSE) (spec text + schema) |
+| **Validator** | [`npx @agenthippo-ai/pack-validate`](https://www.npmjs.com/package/@agenthippo-ai/pack-validate) · Action [`agenthippoai/pack`](https://github.com/agenthippoai/pack) |
 
-This repository is the machine-readable / citable source for the format. The website hosts the same schema and a rendered spec page. Validator + GitHub Action land here next (`pack-validate`).
+This repository is the machine-readable / citable source for the format. The website hosts the same schema and a rendered spec page. The CLI and GitHub Action validate against [`schema/v1/agent.json`](./schema/v1/agent.json) in this repo.
 
 ## What is an Agent Pack
 
@@ -55,7 +56,28 @@ Only `agent.yaml` is required by the schema. The pack prompt is always **`AGENTS
 ```
 SPEC.md                 # Agent Pack Specification v1 (markdown)
 schema/v1/agent.json    # JSON Schema (identical to packs.agenthippo.ai)
+bin/pack-validate.mjs   # CLI entry
+src/validate.mjs        # Ajv2020 + js-yaml
+action.yml              # GitHub Action (thin CLI wrapper)
+package.json            # @agenthippo-ai/pack-validate
 LICENSE                 # CC BY 4.0
+```
+
+## Validate
+
+```bash
+# current directory (./agent.yaml) or a pack / store packs dir
+npx @agenthippo-ai/pack-validate
+npx @agenthippo-ai/pack-validate ./path/to/agent.yaml
+npx @agenthippo-ai/pack-validate ./agent-packs
+```
+
+GitHub Actions:
+
+```yaml
+- uses: agenthippoai/pack@v0.1.0
+  with:
+    path: .
 ```
 
 ## Editor validation
