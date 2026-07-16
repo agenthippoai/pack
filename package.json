@@ -2,6 +2,16 @@
   "name": "@agenthippo-ai/pack-validate",
   "version": "0.1.0",
   "description": "Validate Agent Pack agent.yaml manifests against the published JSON Schema",
+  "keywords": [
+    "Agent Pack",
+    "AgentHippo",
+    "agent-pack",
+    "agenthippo",
+    "agent",
+    "validator",
+    "json-schema",
+    "agent.yaml"
+  ],
   "author": "AgentHippo <dev@agenthippo.ai>",
   "license": "CC-BY-4.0",
   "type": "module",

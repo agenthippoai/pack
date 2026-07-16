@@ -1,6 +1,6 @@
 # Agent Pack
 
-Published specification, JSON Schema, and (soon) validator for **Agent Packs**.
+Published specification, JSON Schema, and validator for **Agent Packs**.
 
 > **An Agent Pack is a versioned, deployable unit of agent** — its prompt, its tools, its engine, and its permissions.  
 > It’s what your IDE writes, your CI validates, and your infrastructure runs.
